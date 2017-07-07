@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.underwatch.screens.MenuScreen;
 import com.underwatch.screens.UnderScreen;
 
+// TODO font scaling is rubbish. Decide which sizes we need!
 public class Game extends ApplicationAdapter {
 	
 	public static final byte MENU = 0;
