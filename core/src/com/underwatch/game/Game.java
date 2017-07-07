@@ -3,31 +3,43 @@ package com.underwatch.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.underwatch.screens.MenuScreen;
+import com.underwatch.screens.UnderScreen;
 
 public class Game extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+	
+	public static final byte MENU = 0;
+	public static final byte OPTIONS = 3;
+	public static final byte PLAY = 2;
+	public static final byte SERVERS = 1;
+	
+	private UnderScreen screen;
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		screen = new MenuScreen(this);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		screen.update(Gdx.graphics.getDeltaTime());
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		screen.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+	
+	}
+	
+	public void setScreen(byte which) {
+		screen.dispose();
+		
+		switch(which) { // heh
+		case MENU:
+			screen = new MenuScreen(this);
+			break;
+		}
 	}
 }
