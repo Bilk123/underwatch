@@ -7,6 +7,7 @@ import com.underwatch.game.Game;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.title = "Underwatch";
 		new LwjglApplication(new Game(), config);
 	}
 }
