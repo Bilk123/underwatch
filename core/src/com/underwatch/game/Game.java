@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.underwatch.screens.MenuScreen;
+import com.underwatch.screens.OptionsScreen;
 import com.underwatch.screens.UnderScreen;
 
 // TODO font scaling is rubbish. Decide which sizes we need!
@@ -18,7 +19,7 @@ public class Game extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		screen = new MenuScreen(this);
+		screen = new OptionsScreen(this);
 	}
 
 	@Override

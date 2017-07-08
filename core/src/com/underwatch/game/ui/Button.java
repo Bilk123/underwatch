@@ -40,12 +40,15 @@ public class Button {
 
     public void draw(SpriteBatch sb) {
         button.draw(sb);
-        UnderScreen.font36.draw(sb, text, button.getX() + button.getWidth() / 2 - txtWidth / 2, button.getY() + button.getHeight() - txtHeight / 2);
+        sb.setColor(fontColor);
+        UnderScreen.font36.draw(sb, text, button.getX() + button.getWidth() / 2 - txtWidth / 2, button.getY() + button.getHeight() / 2);
+        sb.setColor(Color.WHITE);
     }
 
     public void update(float dt) {
-        if (button.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+        if (button.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
             //On Click
+            System.out.println(fontColor);
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if (!click) {
                     event.executeAction();
@@ -54,9 +57,8 @@ public class Button {
             }
             //On Hover
             if (!hover) {
-                UnderScreen.font36.setColor(bgColor);
+                //UnderScreen.font36.setColor(bgColor);
                 button.setColor(fontColor);
-                System.out.println(fontColor);
                 hover = true;
             }
         }
@@ -65,7 +67,7 @@ public class Button {
             hover = false;
             click = false;
             button.setColor(bgColor);
-            UnderScreen.font36.setColor(fontColor);
+            //UnderScreen.font36.setColor(fontColor);
         }
     }
 
