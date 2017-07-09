@@ -3,7 +3,7 @@ package com.underwatch.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.underwatch.game.Game;
+import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.ui.Button;
 import com.underwatch.game.ui.TextBlock;
 
@@ -16,8 +16,8 @@ public class OptionsScreen extends UnderScreen {
 	//	TODO load volume from memory
 	private int volume;
 	
-	public OptionsScreen(Game game) {
-		super(game);
+	public OptionsScreen(UnderwatchApp underwatchApp) {
+		super(underwatchApp);
 		spriteBatch = new SpriteBatch();
 		title = new TextBlock(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 0.8f, Color.WHITE, "OPTIONS", TextBlock.BIG);
 		lblVolume = new TextBlock(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() * 0.5f, Color.WHITE, "volume 100%", TextBlock.MEDIUM);
@@ -36,7 +36,7 @@ public class OptionsScreen extends UnderScreen {
 	}
 
 	@Override
-	public void render() {
+	public void render(float dt) {
 		// TODO Auto-generated method stub
 		spriteBatch.begin();
 		title.draw(spriteBatch);
@@ -44,6 +44,31 @@ public class OptionsScreen extends UnderScreen {
 		vDown.draw(spriteBatch);
 		//vUp.draw(spriteBatch);
 		spriteBatch.end();
+	}
+
+	@Override
+	public void show() {
+
+	}
+
+	@Override
+	public void resize(int width, int height) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
 	}
 
 	@Override

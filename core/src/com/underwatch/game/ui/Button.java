@@ -10,9 +10,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.underwatch.screens.UnderScreen;
 
-
+// Made By Blake
 public class Button {
-    public static final int FONT_SIZE = 36;
 
     private String text;
     private ButtonEvent event;
@@ -33,9 +32,11 @@ public class Button {
         button.setSize(width, height);
         button.setOriginCenter();
         button.setPosition(x - width / 2, y - height / 2);
+        tmp.dispose();
         GlyphLayout gl = new GlyphLayout(UnderScreen.font36, text);
         txtWidth = gl.width;
         txtHeight = gl.height;
+
     }
 
     public void draw(SpriteBatch sb) {
@@ -70,6 +71,7 @@ public class Button {
             //UnderScreen.font36.setColor(fontColor);
         }
     }
+
 
     public interface ButtonEvent {
         void executeAction();

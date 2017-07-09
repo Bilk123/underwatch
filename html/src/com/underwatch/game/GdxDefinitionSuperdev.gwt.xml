@@ -6,7 +6,7 @@
 	<inherits name='Box2DLights' />
 	<inherits name='com.badlogic.gdx.controllers.controllers-gwt' />
 
-    <inherits name='com.underwatch.game.GdxDefinition' />
+    <inherits name='com.underwatch.underwatchApp.GdxDefinition' />
     
     <collapse-all-properties />
     
