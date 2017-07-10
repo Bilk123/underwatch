@@ -3,9 +3,7 @@ package com.underwatch.game.level.entities.characters;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.underwatch.game.level.entities.Entity;
 
 public abstract class Hero extends Entity {
@@ -36,6 +34,9 @@ public abstract class Hero extends Entity {
         PolygonShape rect = new PolygonShape();
         rect.setAsBox(width*0.9f/2, height*0.9f/2);//needs to be tweaked probably
         body.createFixture(rect, 1.0f);
+
+
+
 
         headSprite = new Sprite(new Texture(headWeaponImagePath));
         headSprite.setSize(0.25f, 0.4f);//needs to be adjusted
