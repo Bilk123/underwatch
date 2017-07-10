@@ -30,7 +30,6 @@ public class Button {
         tmp.fill();
         button = new Sprite(new Texture(tmp));
         button.setSize(width, height);
-        button.setOriginCenter();
         button.setPosition(x - width / 2, y - height / 2);
         tmp.dispose();
         GlyphLayout gl = new GlyphLayout(UnderScreen.font36, text);
@@ -42,14 +41,13 @@ public class Button {
     public void draw(SpriteBatch sb) {
         button.draw(sb);
         sb.setColor(fontColor);
-        UnderScreen.font36.draw(sb, text, button.getX() + button.getWidth() / 2 - txtWidth / 2, button.getY() + button.getHeight() / 2);
+        UnderScreen.font36.draw(sb, text, button.getX() + button.getWidth() / 2 - txtWidth / 2, button.getY() + button.getHeight() / 2 + 9);
         sb.setColor(Color.WHITE);
     }
 
     public void update(float dt) {
         if (button.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
             //On Click
-            System.out.println(fontColor);
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if (!click) {
                     event.executeAction();

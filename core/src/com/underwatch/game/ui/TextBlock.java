@@ -37,7 +37,7 @@ public class TextBlock {
 		height = glyphLayout.height;
 		
 		this.x = x - width / 2;
-		this.y = y - height / 2;
+		this.y = y + height / 2;
 		
 		this.text = text;
 	}
