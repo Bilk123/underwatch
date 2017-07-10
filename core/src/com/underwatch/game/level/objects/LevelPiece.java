@@ -51,7 +51,7 @@ public abstract class LevelPiece {
         fDef.friction = PIECE_FRICTION;
         fDef.density = PIECE_DENSITY;
         fDef.shape = shape;
-        body.createFixture(fDef);
+        body.createFixture(fDef).setUserData(this);
     }
 
     public void update() {

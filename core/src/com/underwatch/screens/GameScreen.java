@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.level.entities.Entity;
@@ -14,6 +13,7 @@ import com.underwatch.game.level.entities.TestEntity;
 import com.underwatch.game.level.entities.characters.Hero;
 import com.underwatch.game.level.objects.Floor;
 import com.underwatch.game.level.objects.Level;
+import com.underwatch.game.level.objects.LevelPiece;
 
 import static com.underwatch.game.UnderwatchApp.PPM;
 
@@ -26,7 +26,52 @@ public class GameScreen extends UnderScreen {
     private Level level;
     private Array<Entity> entities;
 
+    class CollisionListener implements ContactListener {
 
+        @Override
+        public void beginContact(Contact contact) {
+            Object a = contact.getFixtureA().getUserData();
+            Object b = contact.getFixtureB().getUserData();
+
+            if(a instanceof Hero) {
+                if(b instanceof LevelPiece) {
+                    ((Hero)a).setGrounded(true);
+                }
+            } else if(b instanceof Hero) {
+                if(a instanceof LevelPiece) {
+                    ((Hero)b).setGrounded(true);
+                }
+            }
+        }
+
+        @Override
+        public void endContact(Contact contact) {
+            Object a = contact.getFixtureA().getUserData();
+            Object b = contact.getFixtureB().getUserData();
+
+            System.out.println("end");
+
+            if(a instanceof Hero) {
+                if(b instanceof LevelPiece) {
+                    ((Hero)a).setGrounded(false);
+                }
+            } else if(b instanceof Hero) {
+                if(a instanceof LevelPiece) {
+                    ((Hero)b).setGrounded(false);
+                }
+            }
+        }
+
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {
+
+        }
+
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {
+
+        }
+    }
 
     public GameScreen(UnderwatchApp underwatchApp) {
         super(underwatchApp);
@@ -39,8 +84,9 @@ public class GameScreen extends UnderScreen {
     public void show() {
         world = new World(new Vector2(0, -25f), false);
         underwatchApp.setProjectionMatrixFromCamera(camera);
-        level = new Level(1080/PPM,720/PPM, 10,world);
-        entities = new Array<Entity>();
+        level = new Level(1080/PPM,720/PPM, 30,world);
+        entities = new Array<>();
+        world.setContactListener(new CollisionListener());
         //entities.add(new TestEntity(10,10,1,1,world));
 
     }

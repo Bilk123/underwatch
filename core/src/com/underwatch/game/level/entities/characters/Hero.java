@@ -50,12 +50,14 @@ public abstract class Hero extends Entity {
         poly.setAsBox(0.35f, 0.5f);
         Fixture torso = body.createFixture(poly, 1);
         fixtures.put("torso", torso);
+        torso.setUserData("torso");
         poly.dispose();
 
         CircleShape circle2 = new CircleShape();
         circle2.setRadius(0.25f);
         circle2.setPosition(new Vector2(0, 0.875f));
         Fixture head = body.createFixture(circle2, 0);
+        head.setUserData("head");
         fixtures.put("head", head);
         circle2.dispose();
 
@@ -63,6 +65,7 @@ public abstract class Hero extends Entity {
         circle.setRadius(0.35f);
         circle.setPosition(new Vector2(0, -0.5f));
         Fixture feet = body.createFixture(circle, 0);
+        feet.setUserData(this);
         fixtures.put("feet", feet);
         circle.dispose();
 
@@ -72,9 +75,8 @@ public abstract class Hero extends Entity {
 
     @Override
     public void render(SpriteBatch sb) {
-        super.render(sb);
+        //super.render(sb);
         //headSprite.draw(sb);
-
     }
 
     @Override
@@ -101,7 +103,7 @@ public abstract class Hero extends Entity {
                 }
                 break;
             case JUMP:
-                if(isGrounded(gameScreen)) {
+                if(grounded) {
                     movementBits |= 0b001;
                     fixtures.get("feet").setFriction(0);
                     body.applyLinearImpulse(0, 10, body.getPosition().x, body.getPosition().y, true);

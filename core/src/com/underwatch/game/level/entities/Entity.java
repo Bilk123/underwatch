@@ -23,6 +23,7 @@ public abstract class Entity {
 
     protected BodyDef bDef;
     protected FixtureDef fDef;
+    protected boolean grounded;
 
     //TODO: clean up constructor
     public Entity(String spriteImgLoc, float x, float y, float width, float height) {
@@ -79,20 +80,8 @@ public abstract class Entity {
         return 20;
     }
 
-    //  TODO this allows players to jump off others' heads. Maybe cool, maybe not
-    public boolean isGrounded(GameScreen gameScreen) {
-        Array<Contact> contacts = gameScreen.world.getContactList();
-        for(Contact c : contacts) {
-            if(c.isTouching() && c.getFixtureA() == fixtures.get("feet") || c.getFixtureB() == fixtures.get("feet")) {
-                Vector2 pos = body.getPosition();
-                WorldManifold manifold = c.getWorldManifold();
-                boolean below = true;
-                for(Vector2 p : manifold.getPoints()) {
-                    below &= (p.y < pos.y - 0.8f);
-                }
-                if(below) return true;
-            }
-        }
-        return false;
+    public void setGrounded(boolean grounded) {
+        System.out.println(grounded);
+        this.grounded = grounded;
     }
 }

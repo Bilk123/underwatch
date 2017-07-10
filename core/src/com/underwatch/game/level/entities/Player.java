@@ -2,7 +2,6 @@ package com.underwatch.game.level.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.underwatch.game.level.entities.characters.Hero;
 import com.underwatch.screens.GameScreen;
