@@ -13,6 +13,7 @@ import com.underwatch.game.level.entities.Player;
 import com.underwatch.game.level.entities.TestEntity;
 import com.underwatch.game.level.entities.characters.Hero;
 import com.underwatch.game.level.objects.Floor;
+import com.underwatch.game.level.objects.Level;
 
 import static com.underwatch.game.UnderwatchApp.PPM;
 
@@ -22,12 +23,10 @@ public class GameScreen extends UnderScreen {
     private OrthographicCamera camera;
     private Box2DDebugRenderer b2dr;
     private boolean showDebugRenderer = true;
-    private Floor testFloor;
+    private Level level;
     private Array<Entity> entities;
 
-    // TEST
-    Hero hero;
-    Player player;
+
 
     public GameScreen(UnderwatchApp underwatchApp) {
         super(underwatchApp);
@@ -40,28 +39,10 @@ public class GameScreen extends UnderScreen {
     public void show() {
         world = new World(new Vector2(0, -25f), false);
         underwatchApp.setProjectionMatrixFromCamera(camera);
-        testFloor = new Floor(100,world);
+        level = new Level(1080/PPM,720/PPM, 10,world);
         entities = new Array<Entity>();
         //entities.add(new TestEntity(10,10,1,1,world));
 
-        hero = new Hero("sadfellow.png", "badlogic.jpg", 10, 10, world) {
-            @Override
-            public void onUltimateUsed() {
-
-            }
-
-            @Override
-            public void onAbilityUsed() {
-
-            }
-
-            @Override
-            public void shoot() {
-
-            }
-        };
-
-        player = new Player("badlogic.jpg", hero);
     }
 
     @Override
@@ -69,7 +50,7 @@ public class GameScreen extends UnderScreen {
         world.step(1f / UnderwatchApp.APP_FPS, 6, 2);
         for(Entity entity : entities)
             entity.update(this);
-        player.update(dt, this);
+        level.update(dt, this);
         //if (Gdx.input.isKeyJustPressed(Input.Keys.D)) showDebugRenderer = !showDebugRenderer;
     }
 
@@ -80,7 +61,7 @@ public class GameScreen extends UnderScreen {
         //all entities and objects to be rendered here
         for(Entity entity : entities)
             entity.render(underwatchApp.batch);
-        player.render(underwatchApp.batch);
+        level.render(underwatchApp.batch);
         //--------------------------------------------
         underwatchApp.batch.end();
 

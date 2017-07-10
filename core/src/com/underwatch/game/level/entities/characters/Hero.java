@@ -37,7 +37,7 @@ public abstract class Hero extends Entity {
 
     //Decided to make the bodies for all heroes identical
     public Hero(String bodySpriteImagePath, String headWeaponImagePath, float x, float y, World world) {
-        super(bodySpriteImagePath, x, y, 2, 2f);
+        super("sadfellow.png", x, y, 2, 2f);
         //headSprite = new Sprite(new Texture(headWeaponImagePath));
         //headSprite.setSize(0.9f, 0.9f);//needs to be adjusted
 

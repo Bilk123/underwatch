@@ -32,4 +32,8 @@ public class Player{
     public void render(SpriteBatch spriteBatch) {
         hero.render(spriteBatch);
     }
+
+    public void dispose(){
+        hero.dispose();
+    }
 }
