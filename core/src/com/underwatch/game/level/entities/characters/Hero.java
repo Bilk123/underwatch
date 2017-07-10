@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.level.entities.Entity;
 import com.underwatch.screens.GameScreen;
 
@@ -36,7 +37,7 @@ public abstract class Hero extends Entity {
 
     //Decided to make the bodies for all heroes identical
     public Hero(String bodySpriteImagePath, String headWeaponImagePath, float x, float y, World world) {
-        super(bodySpriteImagePath, x, y, 1, 2f);
+        super(bodySpriteImagePath, x, y, 2, 2f);
         //headSprite = new Sprite(new Texture(headWeaponImagePath));
         //headSprite.setSize(0.9f, 0.9f);//needs to be adjusted
 
@@ -46,24 +47,24 @@ public abstract class Hero extends Entity {
         body = world.createBody(def);
 
         PolygonShape poly = new PolygonShape();
-        poly.setAsBox(0.45f, 0.8f);
+        poly.setAsBox(0.35f, 0.5f);
         Fixture torso = body.createFixture(poly, 1);
         fixtures.put("torso", torso);
         poly.dispose();
 
-        CircleShape circle = new CircleShape();
-        circle.setRadius(0.45f);
-        circle.setPosition(new Vector2(0, -1f));
-        Fixture feet = body.createFixture(circle, 0);
-        fixtures.put("feet", feet);
-        circle.dispose();
-
         CircleShape circle2 = new CircleShape();
-        circle2.setRadius(0.45f);
-        circle2.setPosition(new Vector2(0, 1f));
+        circle2.setRadius(0.25f);
+        circle2.setPosition(new Vector2(0, 0.875f));
         Fixture head = body.createFixture(circle2, 0);
         fixtures.put("head", head);
         circle2.dispose();
+
+        CircleShape circle = new CircleShape();
+        circle.setRadius(0.35f);
+        circle.setPosition(new Vector2(0, -0.5f));
+        Fixture feet = body.createFixture(circle, 0);
+        fixtures.put("feet", feet);
+        circle.dispose();
 
         body.setBullet(true);
         body.setFixedRotation(true);
@@ -78,7 +79,7 @@ public abstract class Hero extends Entity {
 
     @Override
     protected float getMaxVel() {
-        return super.getMaxVel();
+        return 12;
     }
 
     public void handleMovement(MovementEvent me, GameScreen gameScreen) {
@@ -103,24 +104,27 @@ public abstract class Hero extends Entity {
                 if(isGrounded(gameScreen)) {
                     movementBits |= 0b001;
                     fixtures.get("feet").setFriction(0);
-                    body.applyLinearImpulse(0, 20, body.getPosition().x, body.getPosition().y, true);
+                    body.applyLinearImpulse(0, 10, body.getPosition().x, body.getPosition().y, true);
+                } else {
+                    System.out.println("NOTJUMP");
                 }
+                break;
         }
     }
 
     @Override
     public void update(GameScreen gameScreen) {
-        super.update(gameScreen);
+        //super.update(gameScreen);
         if((movementBits) == 0) {
             fixtures.get("feet").setFriction(100F);
             body.setLinearVelocity(body.getLinearVelocity().x * 0.5f, body.getLinearVelocity().y);
         }
         movementBits = 0;
         float posX = body.getPosition().x - width / 2;
-        float posY = body.getPosition().y + height / 2 + 0.25f;//attempt to place the head on top of the body sprite
+        float posY = body.getPosition().y - height / 2 + 3f / UnderwatchApp.PPM;//attempt to place the head on top of the body sprite
         float rotation = (float) Math.toDegrees(body.getAngle());//This value should be calculated from the mouse or passed through the server in the future
-        //headSprite.setPosition(posX, posY);
-        //headSprite.setRotation(rotation);
+        bodySprite.setPosition(posX, posY);
+        bodySprite.setRotation(rotation);
     }
 
     public abstract void onUltimateUsed();
