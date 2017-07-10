@@ -22,8 +22,7 @@ public class UnderwatchScreenManager {
     public UnderwatchScreenManager(UnderwatchApp underwatchApp) {
         this.underwatchApp = underwatchApp;
         initScreens();
-        //setScreen(eScreenState.PLAY);
-        setScreen(eScreenState.OPTIONS);
+        setScreen(eScreenState.PLAY);
     }
 
     //creates all screen on execution of the app

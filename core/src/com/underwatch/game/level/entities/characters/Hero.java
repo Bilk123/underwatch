@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.underwatch.game.level.entities.Entity;
+import com.underwatch.screens.GameScreen;
 
 public abstract class Hero extends Entity {
     public enum eTeam {
@@ -50,8 +51,8 @@ public abstract class Hero extends Entity {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(GameScreen gameScreen) {
+        super.update(gameScreen);
         float posX = body.getPosition().x - width / 2;
         float posY = body.getPosition().y + height / 2 + 0.25f;//attempt to place the head on top of the body sprite
         float rotation = (float) Math.toDegrees(body.getAngle());//This value should be calculated from the mouse or passed through the server in the future

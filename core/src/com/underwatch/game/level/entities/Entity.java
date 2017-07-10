@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.OrderedMap;
+import com.underwatch.screens.GameScreen;
+
+import java.util.SortedMap;
 
 
 public abstract class Entity {
@@ -12,6 +16,8 @@ public abstract class Entity {
     protected Shape shape;
     protected Sprite bodySprite;
     protected float width, height;
+
+    protected OrderedMap<String, Fixture> fixtures;
 
     protected BodyDef bDef;
     protected FixtureDef fDef;
@@ -28,9 +34,10 @@ public abstract class Entity {
         Texture img = new Texture(spriteImgLoc);
         bodySprite = new Sprite(img);
         bodySprite.setSize(width, height);
+        fixtures = new OrderedMap<String, Fixture>();
     }
 
-    public void update(){
+    public void update(GameScreen parent){
         //"attaches" the bodySprite to the body (don't know if this is the best way to do this)
         float posX = body.getPosition().x - width / 2;
         float posY = body.getPosition().y - height / 2;
@@ -40,8 +47,6 @@ public abstract class Entity {
     }
 
     public void render(SpriteBatch sb) {
-        update();
-
         //draws this bodySprite
         bodySprite.draw(sb);
     }
