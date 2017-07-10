@@ -3,7 +3,9 @@ package com.underwatch.game.level.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.underwatch.screens.GameScreen;
 
@@ -70,5 +72,27 @@ public abstract class Entity {
             System.out.println("no shape given, default shape assigned");
         }
         body.createFixture(fDef);
+    }
+
+    // Allows different entities to have different max speeds. 20u/s default
+    protected float getMaxVel() {
+        return 20;
+    }
+
+    //  TODO this allows players to jump off others' heads. Maybe cool, maybe not
+    public boolean isGrounded(GameScreen gameScreen) {
+        Array<Contact> contacts = gameScreen.world.getContactList();
+        for(Contact c : contacts) {
+            if(c.isTouching() && c.getFixtureA() == fixtures.get("feet") || c.getFixtureB() == fixtures.get("feet")) {
+                Vector2 pos = body.getPosition();
+                WorldManifold manifold = c.getWorldManifold();
+                boolean below = true;
+                for(Vector2 p : manifold.getPoints()) {
+                    below &= (p.y < pos.y - 1);
+                }
+                if(below) return true;
+            }
+        }
+        return false;
     }
 }

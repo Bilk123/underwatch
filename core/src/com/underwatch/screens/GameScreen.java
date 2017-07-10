@@ -9,7 +9,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.level.entities.Entity;
+import com.underwatch.game.level.entities.Player;
 import com.underwatch.game.level.entities.TestEntity;
+import com.underwatch.game.level.entities.characters.Hero;
 import com.underwatch.game.level.objects.Floor;
 
 import static com.underwatch.game.UnderwatchApp.PPM;
@@ -22,6 +24,11 @@ public class GameScreen extends UnderScreen {
     private boolean showDebugRenderer = true;
     private Floor testFloor;
     private Array<Entity> entities;
+
+    // TEST
+    Hero hero;
+    Player player;
+
     public GameScreen(UnderwatchApp underwatchApp) {
         super(underwatchApp);
         camera = new OrthographicCamera();
@@ -35,7 +42,26 @@ public class GameScreen extends UnderScreen {
         underwatchApp.setProjectionMatrixFromCamera(camera);
         testFloor = new Floor(100,world);
         entities = new Array<Entity>();
-        entities.add(new TestEntity(10,10,1,1,world));
+        //entities.add(new TestEntity(10,10,1,1,world));
+
+        hero = new Hero("badlogic.jpg", "badlogic.jpg", 10, 10, world) {
+            @Override
+            public void onUltimateUsed() {
+
+            }
+
+            @Override
+            public void onAbilityUsed() {
+
+            }
+
+            @Override
+            public void shoot() {
+
+            }
+        };
+
+        player = new Player("badlogic.jpg", hero);
     }
 
     @Override
@@ -43,6 +69,7 @@ public class GameScreen extends UnderScreen {
         world.step(1f / UnderwatchApp.APP_FPS, 6, 2);
         for(Entity entity : entities)
             entity.update(this);
+        player.update(dt, this);
         //if (Gdx.input.isKeyJustPressed(Input.Keys.D)) showDebugRenderer = !showDebugRenderer;
     }
 
@@ -53,6 +80,7 @@ public class GameScreen extends UnderScreen {
         //all entities and objects to be rendered here
         for(Entity entity : entities)
             entity.render(underwatchApp.batch);
+        player.render(underwatchApp.batch);
         //--------------------------------------------
         underwatchApp.batch.end();
 
