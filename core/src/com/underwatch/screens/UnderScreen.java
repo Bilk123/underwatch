@@ -28,7 +28,6 @@ public abstract class UnderScreen implements Screen{
 	// Methods all good classes have
 	public abstract void update(float dt);
 
-
 	//moved gl functions here, since the implementation of libGDX's Game instead of ApplicationListener
 	@Override
 	public void render(float dt) {

@@ -1,0 +1,71 @@
+Wokring Title: UNDERWATCH
+========================
+
+> Class-based 2D procedural platformer
+> BOX2D with lighting
+> Multiplayer
+> Controller support
+> Themed maps
+> Parallax backgrounds
+> Polygonal colliders
+> TDM
+> Random class mode
+
+> 4v4
+
+> Floor
+> Oneway
+> Walls
+> Hazard pieces
+> Other stuff
+> Healthpacks
+
+> 50 kills wins
+> safe zone (where you can change class)
+
+> Snow, forest, desert
+> Jump pads
+> Ladders
+
+CHARACTERS
+Soldier
+> STANDARD Ass rifle (25)
+> MOV AB Climbing
+> ULT Stimpak-like
+Sniper
+> STD Rifle (8)
+> MOV AB Cloak, movement sensitive
+> ULT Out of the flatlands
+Demo
+> STD Grenade Launcher, choosable ammo, long reload (3)
+> AB Bomb of some kind
+> ULT Homing RPG
+Engineer
+> STD Small shotgun (2)
+> AB Turret, prox bomb (camoflagued for
+> ULT Darkness?
+Rocketman
+> STD 357 (6)
+> AB Jetpack
+> ULT Mad air spin move
+
+SCREENS
+Start (press space)
+Menu
+Options (audio, controls)
+Server Browser
+Game
+> Character Select
+> Pause menu
+
+CLASSES
+Game
+Screen (abs)
+Player
+Level
+Character (abs)
+Puppets
+Entity (abs)
+LevelPiece (abs)
+HUD
+
