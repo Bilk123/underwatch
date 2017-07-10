@@ -9,11 +9,13 @@ import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.ui.Button;
 import com.underwatch.game.ui.TextBlock;
 
+// TODO get this actually working
+
 public class OptionsScreen extends UnderScreen {
 
 	private SpriteBatch spriteBatch;
 	private TextBlock title, lblVolume, lblControls;
-	private Button vUp, vDown, btnConrols, back;
+	private Button vUp, vDown, btnControls, back;
 
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	
@@ -30,6 +32,7 @@ public class OptionsScreen extends UnderScreen {
 		vDown.update(dt);
 		vUp.update(dt);
 		back.update(dt);
+		btnControls.update(dt);
 	}
 
 	@Override
@@ -39,9 +42,11 @@ public class OptionsScreen extends UnderScreen {
 		spriteBatch.begin();
 		title.draw(spriteBatch);
 		lblVolume.draw(spriteBatch);
+		lblControls.draw(spriteBatch);
 		vDown.draw(spriteBatch);
 		vUp.draw(spriteBatch);
 		back.draw(spriteBatch);
+		btnControls.draw(spriteBatch);
 		spriteBatch.end();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -55,11 +60,11 @@ public class OptionsScreen extends UnderScreen {
 		spriteBatch = new SpriteBatch();
 		title = new TextBlock(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 0.8f, Color.WHITE, "OPTIONS", TextBlock.BIG);
 		lblVolume = new TextBlock(Gdx.graphics.getWidth() * 0.4f, Gdx.graphics.getHeight() * 0.5f, Color.WHITE, "volume 100%", TextBlock.MEDIUM);
-		lblControls = new TextBlock(Gdx.graphics.getWidth() * 0.4f, Gdx.graphics.getHeight() * 0.5f - 2 - lblVolume.getHeight(), Color.WHITE, "controls", TextBlock.MEDIUM);
+		lblControls = new TextBlock(Gdx.graphics.getWidth() * 0.4f, Gdx.graphics.getHeight() * 0.5f - 60, Color.WHITE, "controls", TextBlock.MEDIUM);
 		//vDown = new Button(Gdx.graphics.getWidth() / 2 - lblVolume.getWidth(), lblVolume.getY(), lblVolume.getHeight(), lblVolume.getHeight(), Color.FIREBRICK, Color.WHITE, "-", null);
 		vUp = new Button(Gdx.graphics.getWidth() * .6f + 21, Gdx.graphics.getHeight() / 2, 40, 40, Color.FIREBRICK, Color.WHITE, "+", null);
 		vDown = new Button(Gdx.graphics.getWidth() * 0.6f - 21, Gdx.graphics.getHeight() / 2, 40, 40, Color.FIREBRICK, Color.WHITE, "-", null);
-		//btnControls = new Button(Gdx.graphics.getWidth() / 2, Gdx.graphics.get)
+		btnControls = new Button(Gdx.graphics.getWidth() * 0.6f, lblControls.getY() - 5,82, 40, Color.FIREBRICK, Color.WHITE,"...", null);
 		back = new Button(Gdx.graphics.getWidth() / 2, 28, 100, 40, Color.FIREBRICK, Color.WHITE, "<<<", null);
 	}
 
