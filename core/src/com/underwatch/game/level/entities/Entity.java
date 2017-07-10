@@ -36,7 +36,7 @@ public abstract class Entity {
         Texture img = new Texture(spriteImgLoc);
         bodySprite = new Sprite(img);
         bodySprite.setSize(width, height);
-        fixtures = new OrderedMap<String, Fixture>();
+        fixtures = new OrderedMap<>();
     }
 
     public void update(GameScreen parent){
@@ -88,7 +88,7 @@ public abstract class Entity {
                 WorldManifold manifold = c.getWorldManifold();
                 boolean below = true;
                 for(Vector2 p : manifold.getPoints()) {
-                    below &= (p.y < pos.y - 1);
+                    below &= (p.y < pos.y - 0.8f);
                 }
                 if(below) return true;
             }

@@ -17,7 +17,7 @@ public class UnderwatchApp extends Game {
 	public static int APP_FPS = 60;
 
 	//Game variables
-	public static int PPM = 64; //(pixels per metre)
+	public static float PPM = 32F; //(pixels per metre)
 	//allows for different sized screens, but the same display scaled
 	public static int V_WIDTH = 1080;
 	public static int V_HEIGHT = 720;

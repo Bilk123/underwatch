@@ -44,7 +44,7 @@ public class GameScreen extends UnderScreen {
         entities = new Array<Entity>();
         //entities.add(new TestEntity(10,10,1,1,world));
 
-        hero = new Hero("badlogic.jpg", "badlogic.jpg", 10, 10, world) {
+        hero = new Hero("sadfellow.png", "badlogic.jpg", 10, 10, world) {
             @Override
             public void onUltimateUsed() {
 
