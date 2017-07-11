@@ -1,16 +1,17 @@
 package com.underwatch.game.level.entities.characters;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.underwatch.game.UnderwatchApp;
+import com.underwatch.game.level.GamePiece;
 import com.underwatch.game.level.entities.Entity;
-import com.underwatch.screens.GameScreen;
+import com.underwatch.game.level.entities.EntityReference;
+
+import static com.underwatch.game.UnderwatchApp.PPM;
 
 public abstract class Hero extends Entity {
-    public enum eTeam {
+    public enum Team {
         RED, BLUE, BROWN, GOLD
     }
 
@@ -18,29 +19,26 @@ public abstract class Hero extends Entity {
         LEFT, RIGHT, JUMP
     }
 
-    protected Sprite headSprite;
 
     //modify these in the constructor of child classes
-    protected eTeam team = eTeam.RED;
+    protected Team team = Team.RED;
     protected int hitPoints = 100;//health
     protected int ammo = 20;
+    protected int rayCastsPerShot = 1;//a shotgun would have more
     protected float reloadTime = 1f;//1s
-    protected int damage = 10;//hitpoints
-    protected float speed= 1f;//m/s
-    protected int armour=0;//if we decide to add armour
+    protected int damage = 10;//hitpoints per hit raycast
+    protected float speed = 5f;//m/s
+    protected float jumpHeight = 2.5f;//meters;
+    protected int armour = 0;//if we decide to add armour
     protected float minCrosshairRadius = 10;//pixels
     protected float maxCrosshairRadius = 20;//pixels
     //////////////////////////////////////////////////
 
-    // Movement shit
-    private byte movementBits = 0b000;
+    private float speedScalar;
 
     //Decided to make the bodies for all heroes identical
-    public Hero(String bodySpriteImagePath, String headWeaponImagePath, float x, float y, World world) {
-        super("sadfellow.png", x, y, 2, 2f);
-        //headSprite = new Sprite(new Texture(headWeaponImagePath));
-        //headSprite.setSize(0.9f, 0.9f);//needs to be adjusted
-
+    public Hero(String spriteImagePath, float x, float y, World world) {
+        super(spriteImagePath, 2f, 2f);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(x, y);
@@ -50,27 +48,29 @@ public abstract class Hero extends Entity {
         poly.setAsBox(0.35f, 0.5f);
         Fixture torso = body.createFixture(poly, 1);
         fixtures.put("torso", torso);
-        torso.setUserData("torso");
+        torso.setUserData(new EntityReference(this, GamePiece.HERO_BODY));
         poly.dispose();
 
-        CircleShape circle2 = new CircleShape();
-        circle2.setRadius(0.25f);
-        circle2.setPosition(new Vector2(0, 0.875f));
-        Fixture head = body.createFixture(circle2, 0);
-        head.setUserData("head");
-        fixtures.put("head", head);
-        circle2.dispose();
-
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.35f);
-        circle.setPosition(new Vector2(0, -0.5f));
-        Fixture feet = body.createFixture(circle, 0);
-        feet.setUserData(this);
-        fixtures.put("feet", feet);
+        circle.setRadius(0.25f);
+        circle.setPosition(new Vector2(0, 0.875f));
+        Fixture head = body.createFixture(circle, 0);
+        head.setUserData(new EntityReference(this, GamePiece.HERO_HEAD));
+        fixtures.put("head", head);
         circle.dispose();
+
+        CircleShape circle2 = new CircleShape();
+        circle2.setRadius(0.35f + 1 / PPM);
+        circle2.setPosition(new Vector2(0, -0.5f));
+        Fixture feet = body.createFixture(circle2, 0);
+        feet.setUserData(new EntityReference(this, GamePiece.HERO_FEET));
+        fixtures.put("feet", feet);
+        circle2.dispose();
 
         body.setBullet(true);
         body.setFixedRotation(true);
+
+        speedScalar = (float) (Math.sqrt(-2 * (world.getGravity().y) * jumpHeight) / speed);
     }
 
     @Override
@@ -79,51 +79,24 @@ public abstract class Hero extends Entity {
         //headSprite.draw(sb);
     }
 
-    @Override
-    protected float getMaxVel() {
-        return 12;
-    }
-
-    public void handleMovement(MovementEvent me, GameScreen gameScreen) {
+    public void handleMovement(MovementEvent me) {
         switch (me) {
             case LEFT:
-                if(body.getLinearVelocity().x > -getMaxVel()) {
-                    movementBits |= 0b010;
-                    fixtures.get("feet").setFriction(0);
-                    body.applyLinearImpulse(-15, 0, body.getPosition().x, body.getPosition().y, true);
-                    //body.applyForceToCenter(0, 20, true);
-                }
+                body.setLinearVelocity(-speed, body.getLinearVelocity().y);
                 break;
             case RIGHT:
-                if(body.getLinearVelocity().x < getMaxVel()) {
-                    movementBits |= 0b100;
-                    fixtures.get("feet").setFriction(0);
-                    body.applyLinearImpulse(15, 0, body.getPosition().x, body.getPosition().y, true);
-                    //body.applyForceToCenter(0, 20, true);
-                }
+                body.setLinearVelocity(speed, body.getLinearVelocity().y);
                 break;
             case JUMP:
-                if(grounded) {
-                    movementBits |= 0b001;
-                    fixtures.get("feet").setFriction(0);
-                    body.applyLinearImpulse(0, 10, body.getPosition().x, body.getPosition().y, true);
-                } else {
-                    System.out.println("NOTJUMP");
-                }
+                if (grounded) { body.setLinearVelocity(body.getLinearVelocity().x, speed * speedScalar); }
                 break;
         }
     }
 
     @Override
-    public void update(GameScreen gameScreen) {
-        //super.update(gameScreen);
-        if((movementBits) == 0) {
-            fixtures.get("feet").setFriction(100F);
-            body.setLinearVelocity(body.getLinearVelocity().x * 0.5f, body.getLinearVelocity().y);
-        }
-        movementBits = 0;
+    public void update(float dt) {
         float posX = body.getPosition().x - width / 2;
-        float posY = body.getPosition().y - height / 2 + 3f / UnderwatchApp.PPM;//attempt to place the head on top of the body sprite
+        float posY = body.getPosition().y - height / 2 + 3f / PPM;
         float rotation = (float) Math.toDegrees(body.getAngle());//This value should be calculated from the mouse or passed through the server in the future
         bodySprite.setPosition(posX, posY);
         bodySprite.setRotation(rotation);
@@ -134,6 +107,5 @@ public abstract class Hero extends Entity {
     public abstract void onAbilityUsed();
 
     public abstract void shoot();
-
 
 }

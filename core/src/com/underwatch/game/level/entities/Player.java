@@ -9,23 +9,22 @@ import com.underwatch.screens.GameScreen;
 //started player class
 //the player will choose a hero and basically a controller will be attached to the chosen hero
 public class Player{
-    //TODO: create user input and all of the player obvs
     private Hero hero;
 
-    public Player(String spriteImgLoc, Hero hero) {
+    public Player(Hero hero) {
         this.hero = hero;
     }
 
-    public void update(float dt, GameScreen gameScreen) {
+    public void update(float dt) {
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            hero.handleMovement(Hero.MovementEvent.RIGHT, gameScreen);
+            hero.handleMovement(Hero.MovementEvent.RIGHT);
         } else if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            hero.handleMovement(Hero.MovementEvent.LEFT, gameScreen);
+            hero.handleMovement(Hero.MovementEvent.LEFT);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            hero.handleMovement(Hero.MovementEvent.JUMP, gameScreen);
+            hero.handleMovement(Hero.MovementEvent.JUMP);
         }
-        hero.update(gameScreen);
+        hero.update(dt);
     }
 
     public void render(SpriteBatch spriteBatch) {
