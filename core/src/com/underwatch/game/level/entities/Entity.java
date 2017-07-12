@@ -53,4 +53,7 @@ public abstract class Entity extends LevelObject{
         this.againstWall = againstWall;
     }
 
+    public Body getBody() {
+        return body;
+    }
 }

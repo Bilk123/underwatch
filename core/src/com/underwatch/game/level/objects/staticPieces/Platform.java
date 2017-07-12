@@ -8,8 +8,8 @@ import com.underwatch.game.level.objects.MapPiece;
  */
 public class Platform extends MapPiece {
 
-    public Platform(float x, float y, float width, float height, World world) {
-        super(x, y, width, height, true, world);
+    public Platform(float x, float y, World world) {
+        super(x, y, 2,1, true, world);
     }
 
     @Override

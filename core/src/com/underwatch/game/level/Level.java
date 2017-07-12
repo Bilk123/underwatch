@@ -10,6 +10,7 @@ import com.underwatch.game.level.objects.dynamicPieces.Crate;
 import com.underwatch.game.level.objects.staticPieces.Block;
 import com.underwatch.game.level.objects.staticPieces.Floor;
 import com.underwatch.game.level.objects.MapPiece;
+import com.underwatch.game.level.objects.staticPieces.Platform;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class Level {
     private Vector2 sp1, sp2;
     private Block b1;
     private Crate crate;
+
     class CollisionListener implements ContactListener {
 
         @Override
@@ -89,7 +91,7 @@ public class Level {
             return false;
         }
 
-        private void setEntityGrounded(EntityReference ent1, EntityReference ent2, boolean grounded){
+        private void setEntityGrounded(EntityReference ent1, EntityReference ent2, boolean grounded) {
             //handles floor collisions for heroes;
             if (checkEntityReferenceForGamePiece(ent1, GamePiece.HERO_FEET) &&
                     checkEntityReferenceForGamePiece(ent2, GamePiece.GROUND)) {
@@ -126,8 +128,12 @@ public class Level {
             }
         };
         player = new Player(hero);
-        b1 = new Block(5, 2f, world);
-        crate = new Crate(5.5f,4f,world);
+        new Block(5, 2f, world);
+        new Platform(8, 4f, world);
+        new Platform(11, 6f, world);
+        new Platform(14, 8f, world);
+        new Platform(17, 10f, world);
+
     }
 
     public void update(float dt) {

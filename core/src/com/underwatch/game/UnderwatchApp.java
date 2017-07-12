@@ -1,9 +1,12 @@
 package com.underwatch.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.underwatch.game.ui.UIInputController;
 import com.underwatch.screens.UnderwatchScreenManager;
 
 // TODO font scaling is rubbish. Decide which sizes we need!
@@ -25,6 +28,7 @@ public class UnderwatchApp extends Game {
 	//Managers
 	//public AssetManager assets;
 	public UnderwatchScreenManager usm;
+	public static InputMultiplexer im = new InputMultiplexer();
 
 	//Batches
 	public SpriteBatch batch;
@@ -38,6 +42,9 @@ public class UnderwatchApp extends Game {
 		shapeBatch = new ShapeRenderer();
 		//assets = new AssetManager();
 		usm = new UnderwatchScreenManager(this);
+
+		im.addProcessor(new UIInputController());
+		Gdx.input.setInputProcessor(im);
 	}
 
 	//renders the screen which app.screen is set to

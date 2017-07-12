@@ -108,4 +108,7 @@ public abstract class Hero extends Entity {
 
     public abstract void shoot();
 
+    public void stopHorizontalMotion(){
+        body.setLinearVelocity(0,body.getLinearVelocity().y);
+    }
 }
