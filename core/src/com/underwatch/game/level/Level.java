@@ -3,13 +3,13 @@ package com.underwatch.game.level;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.underwatch.game.level.entities.EntityReference;
+import com.underwatch.game.level.entities.LevelObjectReference;
 import com.underwatch.game.level.entities.Player;
 import com.underwatch.game.level.entities.characters.Hero;
-import com.underwatch.game.level.objects.dynamicPieces.Crate;
+import com.underwatch.game.level.entities.characters.HeroDef;
 import com.underwatch.game.level.objects.staticPieces.Block;
 import com.underwatch.game.level.objects.staticPieces.Floor;
-import com.underwatch.game.level.objects.MapPiece;
+import com.underwatch.game.level.objects.staticPieces.StaticMapPiece;
 import com.underwatch.game.level.objects.staticPieces.Platform;
 
 import java.util.ArrayList;
@@ -20,13 +20,12 @@ import java.util.ArrayList;
 public class Level {
 
     private float width, height;
-    private ArrayList<MapPiece> staticPieces;
-    private Floor floor;
-    private Hero hero;
+    private ArrayList<StaticMapPiece> staticPieces;
     private Player player;
-    private Vector2 sp1, sp2;
-    private Block b1;
-    private Crate crate;
+
+    public Player getPlayer() {
+        return player;
+    }
 
     class CollisionListener implements ContactListener {
 
@@ -34,43 +33,24 @@ public class Level {
         public void beginContact(Contact contact) {
             Object a = contact.getFixtureA().getUserData();
             Object b = contact.getFixtureB().getUserData();
-            EntityReference ent1, ent2;
-            if (a instanceof EntityReference) ent1 = (EntityReference) a;
+            LevelObjectReference ent1, ent2;
+            if (a instanceof LevelObjectReference) ent1 = (LevelObjectReference) a;
             else return;
-            if (b instanceof EntityReference) ent2 = (EntityReference) b;
+            if (b instanceof LevelObjectReference) ent2 = (LevelObjectReference) b;
             else return;
-
             setEntityGrounded(ent1, ent2, true);
-
- /*           //handles wall collisions for heroes;
-            if (checkEntityReferenceForGamePiece(ent1, GamePiece.HERO_BODY, GamePiece.HERO_HEAD)&&
-                    checkEntityReferenceForGamePiece(ent2, GamePiece.WALL)) {
-                ent1.getEntity().setAgainstWall(true);
-            } else if (checkEntityReferenceForGamePiece(ent2, GamePiece.HERO_BODY, GamePiece.HERO_HEAD)&&
-                    checkEntityReferenceForGamePiece(ent1, GamePiece.WALL)) {
-                ent2.getEntity().setAgainstWall(true);
-            }*/
         }
 
         @Override
         public void endContact(Contact contact) {
             Object a = contact.getFixtureA().getUserData();
             Object b = contact.getFixtureB().getUserData();
-            EntityReference ent1, ent2;
-            if (a instanceof EntityReference) ent1 = (EntityReference) a;
+            LevelObjectReference ent1, ent2;
+            if (a instanceof LevelObjectReference) ent1 = (LevelObjectReference) a;
             else return;
-            if (b instanceof EntityReference) ent2 = (EntityReference) b;
+            if (b instanceof LevelObjectReference) ent2 = (LevelObjectReference) b;
             else return;
             setEntityGrounded(ent1, ent2, false);
-
-    /*        //handles wall collisions for heroes;
-            if (checkEntityReferenceForGamePiece(ent1, GamePiece.HERO_BODY, GamePiece.HERO_HEAD)&&
-                    checkEntityReferenceForGamePiece(ent2, GamePiece.WALL)) {
-                ent1.getEntity().setAgainstWall(false);
-            } else if (checkEntityReferenceForGamePiece(ent2, GamePiece.HERO_BODY, GamePiece.HERO_HEAD)&&
-                    checkEntityReferenceForGamePiece(ent1, GamePiece.WALL)) {
-                ent2.getEntity().setAgainstWall(false);
-            }*/
 
         }
 
@@ -84,21 +64,21 @@ public class Level {
 
         }
 
-        private boolean checkEntityReferenceForGamePiece(EntityReference ent1, GamePiece... gps) {
-            for (int i = 0; i < gps.length; i++) {
-                if (ent1.getPiece() == gps[i]) return true;
+        private boolean checkEntityReferenceForGamePiece(LevelObjectReference ent1, LevelObjectFixtureType... gps) {
+            for (LevelObjectFixtureType gp : gps) {
+                if (ent1.getPiece() == gp) return true;
             }
             return false;
         }
 
-        private void setEntityGrounded(EntityReference ent1, EntityReference ent2, boolean grounded) {
+        private void setEntityGrounded(LevelObjectReference ent1, LevelObjectReference ent2, boolean grounded) {
             //handles floor collisions for heroes;
-            if (checkEntityReferenceForGamePiece(ent1, GamePiece.HERO_FEET) &&
-                    checkEntityReferenceForGamePiece(ent2, GamePiece.GROUND)) {
-                ent1.getEntity().checkIfGrounded(grounded);
-            } else if (checkEntityReferenceForGamePiece(ent2, GamePiece.HERO_FEET) &&
-                    checkEntityReferenceForGamePiece(ent1, GamePiece.GROUND)) {
-                ent2.getEntity().checkIfGrounded(grounded);
+            if (checkEntityReferenceForGamePiece(ent1, LevelObjectFixtureType.HERO_FEET) &&
+                    checkEntityReferenceForGamePiece(ent2, LevelObjectFixtureType.GROUND)) {
+                ent1.getEntity().setGrounded(grounded);
+            } else if (checkEntityReferenceForGamePiece(ent2, LevelObjectFixtureType.HERO_FEET) &&
+                    checkEntityReferenceForGamePiece(ent1, LevelObjectFixtureType.GROUND)) {
+                ent2.getEntity().setGrounded(grounded);
             }
         }
     }
@@ -108,17 +88,17 @@ public class Level {
         this.width = width;
         this.height = height;
         world.setContactListener(new CollisionListener());
-        floor = new Floor(width, world);
-        sp1 = new Vector2(2, 5);
-        sp2 = new Vector2(width - 2, 2);
-        hero = new Hero("sadfellow.png", sp1.x, sp1.y, world) {
+        new Floor(width, world);
+        Vector2 sp1 = new Vector2(10, 7);
+        Vector2 sp2 = new Vector2(width - 2, 2);
+        Hero hero = new Hero("sadfellow.png", sp1.x, sp1.y, new HeroDef(), world) {
             @Override
-            public void onUltimateUsed() {
+            public void useUltimate() {
 
             }
 
             @Override
-            public void onAbilityUsed() {
+            public void useAbility() {
 
             }
 
@@ -128,23 +108,27 @@ public class Level {
             }
         };
         player = new Player(hero);
-        new Block(5, 2f, world);
-        new Platform(8, 4f, world);
-        new Platform(11, 6f, world);
-        new Platform(14, 8f, world);
-        new Platform(17, 10f, world);
-
+        staticPieces.add(new Block(4, 1.5f, world));
     }
 
     public void update(float dt) {
+        for (StaticMapPiece pieces : staticPieces) {
+            pieces.update(dt);
+        }
         player.update(dt);
     }
 
     public void render(SpriteBatch batch) {
+        for (StaticMapPiece staticPiece : staticPieces) {
+            staticPiece.render(batch);
+        }
         player.render(batch);
     }
 
     public void dispose() {
+        for (StaticMapPiece staticPiece : staticPieces) {
+            staticPiece.dispose();
+        }
         player.dispose();
     }
 

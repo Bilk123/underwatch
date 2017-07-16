@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.height = UnderwatchApp.DESKTOP_HEIGHT;
 		config.foregroundFPS = UnderwatchApp.APP_FPS;
 		config.backgroundFPS = UnderwatchApp.APP_FPS;
+
 		new LwjglApplication(new UnderwatchApp(), config);
 	}
 }

@@ -3,54 +3,96 @@ package com.underwatch.game.level.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.level.entities.characters.Hero;
-import com.underwatch.screens.GameScreen;
+import com.underwatch.util.MathUtil;
 
-//started player class
-//the player will choose a hero and basically a controller will be attached to the chosen hero
-public class Player{
+import static com.underwatch.game.UnderwatchApp.PPM;
+
+/**
+ * A client side way to control a Hero
+ * Only one instance <code>Player</code> should be created.
+ *
+ * @author Blake
+ * @see Hero
+ */
+public class Player {
+
+    /**
+     * The hero attached to the player
+     */
     private Hero hero;
-    private InputAdapter gameInputController;
 
+    /**
+     * A camera which follows the player.
+     */
+    private OrthographicCamera camera;
+
+    /**
+     * Creates the controllable hero
+     *
+     * @param hero The hero which will be controlled
+     */
     public Player(Hero hero) {
         this.hero = hero;
-        gameInputController = new InputAdapter(){
+        InputAdapter gameInputController = new InputAdapter() {
             @Override
             public boolean keyUp(int keycode) {
-                if(keycode == Input.Keys.A || keycode== Input.Keys.D){
-                    hero.getBody().setLinearVelocity(0,hero.getBody().getLinearVelocity().y);
+                if (keycode == Input.Keys.A || keycode == Input.Keys.D) {
+                    hero.handleMovement(Hero.MovementEvent.STOP_HORIZONTAL);
                     return true;
                 }
                 return false;
             }
         };
         UnderwatchApp.im.addProcessor(gameInputController);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, UnderwatchApp.V_WIDTH, UnderwatchApp.V_HEIGHT);
     }
 
+    /**
+     * Calls input and updates the Hero and Camera.
+     */
     public void update(float dt) {
         input();
         hero.update(dt);
+        camera.position.lerp(MathUtil.toVector3(hero.getBody().getPosition().cpy().scl(PPM), 0), 0.2f);
     }
 
-    public void input(){
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+    /**
+     * Checks for key presses to move the hero.
+     */
+    private void input() {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             hero.handleMovement(Hero.MovementEvent.RIGHT);
-        } else if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             hero.handleMovement(Hero.MovementEvent.LEFT);
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             hero.handleMovement(Hero.MovementEvent.JUMP);
         }
     }
 
+    /**
+     * Renders the Hero's sprite.
+     *
+     * @param spriteBatch Used to render the Hero's sprite.
+     */
     public void render(SpriteBatch spriteBatch) {
         hero.render(spriteBatch);
     }
 
-    public void dispose(){
+    /**
+     * Disposes the hero when the program closes.
+     */
+    public void dispose() {
         hero.dispose();
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 }

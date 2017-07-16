@@ -3,13 +3,13 @@ package com.underwatch.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.underwatch.game.ui.UIInputController;
 import com.underwatch.screens.UnderwatchScreenManager;
 
-// TODO font scaling is rubbish. Decide which sizes we need!
 //extends Game to allow the use of the built in Screen interface of libGDX
 public class UnderwatchApp extends Game {
 
@@ -22,12 +22,11 @@ public class UnderwatchApp extends Game {
 	//Game variables
 	public static float PPM = 32F; //(pixels per metre)
 	//allows for different sized screens, but the same display scaled
-	public static int V_WIDTH = 1080;
-	public static int V_HEIGHT = 720;
+	public static int V_WIDTH = (int)(1080/1.6f);
+	public static int V_HEIGHT = (int)(720/1.6f);
 
 	//Managers
-	//public AssetManager assets;
-	public UnderwatchScreenManager usm;
+	private UnderwatchScreenManager usm;
 	public static InputMultiplexer im = new InputMultiplexer();
 
 	//Batches
@@ -40,7 +39,6 @@ public class UnderwatchApp extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		shapeBatch = new ShapeRenderer();
-		//assets = new AssetManager();
 		usm = new UnderwatchScreenManager(this);
 
 		im.addProcessor(new UIInputController());
@@ -59,7 +57,6 @@ public class UnderwatchApp extends Game {
 		super.dispose();
 		batch.dispose();
 		shapeBatch.dispose();
-		//assets.dispose();
 		usm.dispose();
 	}
 

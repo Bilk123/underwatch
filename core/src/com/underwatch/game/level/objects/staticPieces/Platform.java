@@ -1,19 +1,21 @@
 package com.underwatch.game.level.objects.staticPieces;
 
 import com.badlogic.gdx.physics.box2d.World;
-import com.underwatch.game.level.objects.MapPiece;
 
 /**
- * Created by Blake on 10/07/2017.
+ * A platform which its dimensions are generated from a shapeGen png.
+ *
+ * @author Blake
  */
-public class Platform extends MapPiece {
-
+public class Platform extends StaticMapPiece {
+    /**
+     * a 4x1 platform is generated from a platform1ShapeGen.png
+     * with a the sprite platform1.png
+     * @param x The world X component coordinate.
+     * @param y The world Y component coordinate.
+     * @param world The world the platform is created.
+     */
     public Platform(float x, float y, World world) {
-        super(x, y, 2,1, true, world);
-    }
-
-    @Override
-    public String toString() {
-        return "plat";
+        super(x, y, "platform1.png", "platform1ShapeGen.png", world);
     }
 }
