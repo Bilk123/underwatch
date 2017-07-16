@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.underwatch.screens.UnderScreen;
 
 // Made By Blake
+//FIXME: redo completely basically.
 public class Button {
 
     private String text;

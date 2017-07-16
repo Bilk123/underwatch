@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Color;
  * @see Hero
  */
 public class HeroDef {
+    //modify these in the constructor of child classes
+
     /**
      * All possible teams that a <code>Hero</code> can be apart of.
      */
@@ -32,7 +34,6 @@ public class HeroDef {
             return color;
         }
     }
-    //modify these in the constructor of child classes
 
     /**
      * The team the hero is apart of.

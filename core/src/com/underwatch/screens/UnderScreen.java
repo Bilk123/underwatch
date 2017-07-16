@@ -8,7 +8,7 @@ import com.underwatch.game.UnderwatchApp;
 
 //	Made by Sam
 public abstract class UnderScreen implements Screen{
-	protected UnderwatchApp underwatchApp;
+	UnderwatchApp underwatchApp;
 	public static BitmapFont font24;
 	public static BitmapFont font36;
 	public static BitmapFont font64;

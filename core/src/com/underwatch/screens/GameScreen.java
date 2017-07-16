@@ -38,8 +38,6 @@ public class GameScreen extends UnderScreen {
         level = new Level(1080 / PPM, 720 / PPM, 30, world);
         camera = level.getPlayer().getCamera();
         underwatchApp.setProjectionMatrixFromCamera(camera);
-
-
     }
 
     @Override

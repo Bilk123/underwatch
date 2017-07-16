@@ -1,7 +1,7 @@
 package com.underwatch.game.ui;
 
 import com.badlogic.gdx.InputProcessor;
-
+//TODO: when menus and other screens are being made implement this class.
 public class UIInputController implements InputProcessor{
     @Override
     public boolean keyDown(int keycode) {

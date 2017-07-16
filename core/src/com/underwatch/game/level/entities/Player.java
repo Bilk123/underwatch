@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.underwatch.game.UnderwatchApp;
 import com.underwatch.game.level.entities.characters.Hero;
 import com.underwatch.util.MathUtil;
@@ -58,7 +60,8 @@ public class Player {
     public void update(float dt) {
         input();
         hero.update(dt);
-        camera.position.lerp(MathUtil.toVector3(hero.getBody().getPosition().cpy().scl(PPM), 0), 0.2f);
+        Vector3 camPos = MathUtil.toVector3(hero.getBody().getPosition().cpy().scl(PPM),0);
+        camera.position.lerp(camPos, 0.2f);
     }
 
     /**
