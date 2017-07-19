@@ -17,7 +17,7 @@ public class Block extends StaticMapPiece {
      * @param world The world the block will be created in.
      */
     public Block(float x, float y, World world) {
-        super(x, y,"sadfellow.png" ,"sad.png", world);
+        super(x, y,"sprites/platform1.png", "sprites/platform1ShapeGen.png", world);
     }
 
 }

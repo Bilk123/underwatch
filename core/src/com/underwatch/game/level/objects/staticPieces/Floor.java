@@ -17,7 +17,7 @@ public class Floor extends StaticMapPiece {
      * @param world Which world the floor must be created.
      */
     public Floor(float width, World world){
-        super(width/2,0,width,2f,"sadfellow.png", world);
+        super(width/2,0,width,2f,"textures/floor.png", world,true);
     }
 
 }

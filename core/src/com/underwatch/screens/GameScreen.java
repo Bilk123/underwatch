@@ -29,13 +29,13 @@ public class GameScreen extends UnderScreen {
 
     GameScreen(UnderwatchApp underwatchApp) {
         super(underwatchApp);
-        b2dr = new Box2DDebugRenderer();
+        b2dr = new Box2DDebugRenderer(true, true, false,false,true,true);
     }
 
     @Override
     public void show() {
         world = new World(new Vector2(0, -25f), false);
-        level = new Level(1080 / PPM, 720 / PPM, 30, world);
+        level = new Level(50, 35, 30, world);
         camera = level.getPlayer().getCamera();
         underwatchApp.setProjectionMatrixFromCamera(camera);
     }

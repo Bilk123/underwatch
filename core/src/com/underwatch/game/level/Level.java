@@ -1,8 +1,11 @@
 package com.underwatch.game.level;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.underwatch.game.level.entities.LevelObjectReference;
@@ -12,7 +15,9 @@ import com.underwatch.game.level.entities.characters.HeroDef;
 import com.underwatch.game.level.objects.staticPieces.Block;
 import com.underwatch.game.level.objects.staticPieces.Floor;
 import com.underwatch.game.level.objects.staticPieces.StaticMapPiece;
+import com.underwatch.util.RenderUtil;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +56,45 @@ public class Level {
     }
 
     /**
+     * Creates the Player and Map.
+     * @param width The width in meters of the map.
+     * @param height The height in meters of the map.
+     * @param generatedLevelPieces How many static pieces will be generated.
+     * @param world The world which all entities and staticPieces will be added to.
+     */
+    public Level(float width, float height, int generatedLevelPieces, World world) {
+        staticPieces = new ArrayList<>();
+        this.width = width;
+        this.height = height;
+        world.setContactListener(new CollisionListener());
+        staticPieces.add(new Floor(width, world));
+        Vector2 sp1 = new Vector2(10, 7);
+        Vector2 sp2 = new Vector2(width - 2, 2);
+        Hero hero = new Hero("sprites/sadfellow.png", sp1.x, sp1.y, new HeroDef(), world) {
+            @Override
+            public void useUltimate() {
+
+            }
+
+            @Override
+            public void useAbility() {
+
+            }
+
+            @Override
+            public void shoot() {
+
+            }
+        };
+        player = new Player(hero);
+        staticPieces.add(new Block(4, 1.5f, world));
+        Texture texture = new Texture("sprites/forest-background.png");
+        background = new Sprite(texture);
+        background.setSize(width*2, height*2);
+        background.setPosition(-width/2, -height/4);
+    }
+
+    /**
      * An inner class which links collisions with dynamic and static pieces.
      */
     class CollisionListener implements ContactListener {
@@ -67,6 +111,7 @@ public class Level {
             else return;
             if (b instanceof LevelObjectReference) levelObjectReference2 = (LevelObjectReference) b;
             else return;
+            System.out.println("contact begun: " +levelObjectReference1.toString()+ " & "+ levelObjectReference2.toString());
             setEntityGrounded(levelObjectReference1, levelObjectReference2, true);
         }
 
@@ -83,6 +128,7 @@ public class Level {
             else return;
             if (b instanceof LevelObjectReference) levelObjectReference2 = (LevelObjectReference) b;
             else return;
+            System.out.println("contact ended: " +levelObjectReference1.toString()+ " & "+ levelObjectReference2.toString());
             setEntityGrounded(levelObjectReference1, levelObjectReference2, false);
 
         }
@@ -131,45 +177,6 @@ public class Level {
     }
 
     /**
-     * Creates the Player and Map.
-     * @param width The width in meters of the map.
-     * @param height The height in meters of the map.
-     * @param generatedLevelPieces How many static pieces will be generated.
-     * @param world The world which all entities and staticPieces will be added to.
-     */
-    public Level(float width, float height, int generatedLevelPieces, World world) {
-        staticPieces = new ArrayList<>();
-        this.width = width;
-        this.height = height;
-        world.setContactListener(new CollisionListener());
-        new Floor(width, world);
-        Vector2 sp1 = new Vector2(10, 7);
-        Vector2 sp2 = new Vector2(width - 2, 2);
-        Hero hero = new Hero("sadfellow.png", sp1.x, sp1.y, new HeroDef(), world) {
-            @Override
-            public void useUltimate() {
-
-            }
-
-            @Override
-            public void useAbility() {
-
-            }
-
-            @Override
-            public void shoot() {
-
-            }
-        };
-        player = new Player(hero);
-        staticPieces.add(new Block(4, 1.5f, world));
-        Texture texture = new Texture("background0.png");
-        background = new Sprite(texture);
-        background.setSize(width*2, height*2);
-        background.setPosition(-width/2, -height/4);
-    }
-
-    /**
      * updates all levelObjects.
      * @param dt The time from the previous frame.
      */
@@ -178,6 +185,7 @@ public class Level {
             pieces.update(dt);
         }
         player.update(dt);
+
     }
 
     /**
@@ -190,6 +198,7 @@ public class Level {
             staticPiece.render(batch);
         }
         player.render(batch);
+
     }
 
     /**
@@ -201,6 +210,7 @@ public class Level {
             staticPiece.dispose();
         }
         player.dispose();
+
     }
 
 

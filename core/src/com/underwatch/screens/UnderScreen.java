@@ -15,9 +15,9 @@ public abstract class UnderScreen implements Screen{
 
 
 	static{
-		font24 = new BitmapFont(Gdx.files.internal("vcr_24.fnt"));
-		font36 = new BitmapFont(Gdx.files.internal("vcr_36.fnt"));
-		font64 = new BitmapFont(Gdx.files.internal("vcr_64.fnt"));
+		font24 = new BitmapFont(Gdx.files.internal("fonts/vcr_24.fnt"));
+		font36 = new BitmapFont(Gdx.files.internal("fonts/vcr_36.fnt"));
+		font64 = new BitmapFont(Gdx.files.internal("fonts/vcr_64.fnt"));
 	}
 
 	//	Constructor with reference to parent underwatchApp. Needed for changing screens and such

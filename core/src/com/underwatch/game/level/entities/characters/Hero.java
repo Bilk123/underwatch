@@ -64,7 +64,7 @@ public abstract class Hero extends Entity {
 
         //Creates the feet of the hero.
         CircleShape circle2 = new CircleShape();
-        circle2.setRadius(0.35f + 1 / PPM);
+        circle2.setRadius(0.35f);
         circle2.setPosition(new Vector2(0, -0.5f));
         Fixture feet = body.createFixture(circle2, 0);
         feet.setUserData(new LevelObjectReference(this, LevelObjectFixtureType.HERO_FEET));
